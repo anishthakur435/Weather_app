@@ -22,12 +22,15 @@ function CurrentWeather({ weather, loading }) {
   const timezoneOffset = weather?.timezone ?? 0;
 
   const date = weather?.dt
-    ? new Date((weather.dt + timezoneOffset) * 1000).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        timeZone: "UTC",
-      })
+    ? new Date((weather.dt + timezoneOffset) * 1000).toLocaleDateString(
+        "en-US",
+        {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          timeZone: "UTC",
+        },
+      )
     : "Date unavailable";
 
   const formatTime = (timestamp) => {
@@ -45,11 +48,11 @@ function CurrentWeather({ weather, loading }) {
 
   return (
     <Box className="apple-glass rounded-3xl p-6 max-w-md mx-auto transition-all duration-300 shadow-lg bg-[#193459]/50 text-white">
-      <Box className="flex flex-col items-center justify-center text-center">
+      <Box className="flex flex-col items-center justify-center text-center gap-2">
         <Typography
           variant="h4"
           component="h2"
-          className="font-medium tracking-wide"
+          className="font-small tracking-wide text-center"
         >
           {cityName}
           {country}
@@ -57,12 +60,12 @@ function CurrentWeather({ weather, loading }) {
 
         <Typography
           variant="caption"
-          className="opacity-60 mt-1 block tracking-wider uppercase font-semibold"
+          className="opacity-60 block tracking-wider uppercase font-semibold"
         >
           {date}
         </Typography>
 
-        <Box className="flex items-center justify-center my-4 gap-2">
+        <Box className="flex items-center justify-center my-2 gap-2">
           <img
             src={`https://openweathermap.org/img/wn/${iconCode}@2x.png`}
             alt={weatherDescription}
@@ -77,20 +80,43 @@ function CurrentWeather({ weather, loading }) {
           </Typography>
         </Box>
 
-        <Typography variant="h6" className="capitalize font-medium mb-3">
-          {weatherDescription}
-        </Typography>
-
-        <Box className="w-full flex flex-col items-center justify-center gap-4 border-t border-white/10 pt-3 text-sm opacity-80">
-          <Typography variant="body2" className="font-light">
-            Feels Like: <span className="font-medium">{feelsLike}°C</span>
-          </Typography>
-          <Box className="flex flex-row justify-between gap-7">
-            <Typography variant="body2" className="font-light">
-              Sunrise: <span className="font-medium">{sunrise}</span>
+        <Box className="w-full flex flex-col items-center justify-center gap-3  border-white/10 pt-3 text-sm opacity-80">
+          <Box className="w-full flex flex-row items-center justify-between gap-6">
+            <Typography variant="body2" className="capitalize font-medium">
+              {weatherDescription}
             </Typography>
             <Typography variant="body2" className="font-light">
-              Sunset: <span className="font-medium">{sunset}</span>
+              Feels Like:{" "}
+              <Typography
+                component="span"
+                variant="body2"
+                className="font-medium"
+              >
+                {feelsLike}°C
+              </Typography>
+            </Typography>
+          </Box>
+
+          <Box className="w-full flex flex-row items-center justify-between gap-6">
+            <Typography variant="body2" className="font-light">
+              Sunrise:{" "}
+              <Typography
+                component="span"
+                variant="body2"
+                className="font-medium"
+              >
+                {sunrise}
+              </Typography>
+            </Typography>
+            <Typography variant="body2" className="font-light">
+              Sunset:{" "}
+              <Typography
+                component="span"
+                variant="body2"
+                className="font-medium"
+              >
+                {sunset}
+              </Typography>
             </Typography>
           </Box>
         </Box>
