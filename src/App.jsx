@@ -1,4 +1,3 @@
-import { Box, Typography } from "@mui/material";
 import "./App.css";
 import HomePage from "./pages/HomePage";
 

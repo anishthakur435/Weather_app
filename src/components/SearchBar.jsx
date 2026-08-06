@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 
@@ -33,6 +33,7 @@ function SearchBar({ initialCity, onSearch }) {
             <InputAdornment position="end">
               <IconButton
                 onClick={handleSearchClick}
+                aria-label="Search"
                 size="small"
                 sx={{
                   color: "rgba(255,255,255,.65)",

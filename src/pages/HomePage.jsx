@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Sidebar from "../components/Sidebar";
 import CurrentWeather from "../components/CurrentWeather";
 import HourlyForecast from "../components/HourlyForecast";
+import Forecast from "../components/Forecast";
 
 import cloudySky from "../assets/background/cloudySky.mp4";
 import rain from "../assets/background/rain.mp4";
@@ -19,9 +20,13 @@ import {
   Typography,
 } from "@mui/material";
 
-import { ViewSidebarOutlined } from "@mui/icons-material";
+import {
+  ViewSidebarOutlined,
+  SearchOutlined,
+  Error,
+} from "@mui/icons-material";
 import { APP_CONFIG } from "../constants/config";
-import { getForecast, getWeatherData } from "../services/weatherApi";
+import { useWeather } from "../hooks/useWeather";
 
 const drawerWidth = APP_CONFIG.UI.DRAWER_WIDTH;
 
@@ -35,48 +40,28 @@ const weatherVideos = {
 };
 
 function HomePage() {
-  const [weather, setWeather] = useState(null);
-  const [forecast, setForecast] = useState(null);
-  const [city, setCity] = useState(APP_CONFIG.DEFAULT_CITY);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const {
+    weather,
+    forecast,
+    city,
+    loading,
+    error,
+    handleSearch,
+    searchHistory,
+    clearHistory,
+    initWeather,
+  } = useWeather();
   const [openDrawer, setOpenDrawer] = useState(true);
 
-  const handleSearch = async (cityName) => {
-    if (!cityName.trim()) return;
-
-    try {
-      setLoading(true);
-      setError("");
-
-      const [weatherData, forecastData] = await Promise.all([
-        getWeatherData(cityName),
-        getForecast(cityName),
-      ]);
-
-      setWeather(weatherData);
-      setForecast(forecastData);
-      setCity(cityName);
-    } catch (err) {
-      console.error(err);
-      setError("Unable to fetch weather data. Please try again.");
-      setWeather(null);
-      setForecast(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    handleSearch(city);
-  }, []);
+    initWeather();
+  }, [initWeather]);
 
   const toggleDrawer = () => {
     setOpenDrawer((prev) => !prev);
   };
 
   const todayWeather = weather?.weather?.[0]?.main?.toLowerCase();
-
   const backgroundVideo = weatherVideos[todayWeather] || clearSkySlow;
 
   return (
@@ -140,7 +125,12 @@ function HomePage() {
             },
           }}
         >
-          <Sidebar city={city} handleSearch={handleSearch} weather={weather} />
+          <Sidebar
+            city={city}
+            handleSearch={handleSearch}
+            searchHistory={searchHistory}
+            clearHistory={clearHistory}
+          />
         </Drawer>
 
         <main
@@ -161,13 +151,32 @@ function HomePage() {
               <CircularProgress sx={{ color: "white" }} />
             </Box>
           ) : error ? (
-            <Typography color="error">{error}</Typography>
+            <Box className="flex flex-col h-full items-center justify-center text-white/80 gap-4 text-center">
+              <Error sx={{ fontSize: 64, color: "#ff6b6b" }} />
+              <Typography variant="h5" className="font-light">
+                Oops! Something went wrong.
+              </Typography>
+              <Typography variant="body1" className="opacity-70">
+                {error}
+              </Typography>
+            </Box>
+          ) : !weather ? (
+            <Box className="flex flex-col h-full items-center justify-center text-white/80 gap-4 text-center">
+              <SearchOutlined sx={{ fontSize: 64, opacity: 0.5 }} />
+              <Typography variant="h5" className="font-light">
+                Search for a city
+              </Typography>
+            </Box>
           ) : (
             <Box className="mx-auto max-w-7xl">
               <CurrentWeather weather={weather} />
 
               <Box className="mt-8">
                 <HourlyForecast forecast={forecast} />
+              </Box>
+
+              <Box className="mt-4">
+                <Forecast forecast={forecast} />
               </Box>
             </Box>
           )}
