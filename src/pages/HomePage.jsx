@@ -56,6 +56,7 @@ function HomePage() {
 
       setWeather(weatherData);
       setForecast(forecastData);
+      setCity(cityName);
     } catch (err) {
       console.error(err);
       setError("Unable to fetch weather data. Please try again.");
@@ -141,7 +142,6 @@ function HomePage() {
         >
           <Sidebar
             city={city}
-            setCity={setCity}
             handleSearch={handleSearch}
             weather={weather}
           />

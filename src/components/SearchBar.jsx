@@ -1,20 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 
-function SearchBar({ city, setCity, handleSearch }) {
+function SearchBar({ initialCity, onSearch }) {
+  const [inputValue, setInputValue] = useState(initialCity || "");
+
+  useEffect(() => {
+    setInputValue(initialCity || "");
+  }, [initialCity]);
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSearch();
+      onSearch(inputValue);
     }
+  };
+
+  const handleSearchClick = () => {
+    onSearch(inputValue);
   };
 
   return (
     <TextField
       fullWidth
       placeholder="Search city"
-      value={city}
-      onChange={(e) => setCity(e.target.value)}
+      value={inputValue}
+      onChange={(e) => setInputValue(e.target.value)}
       onKeyDown={handleKeyDown}
       variant="outlined"
       slotProps={{
@@ -22,7 +32,7 @@ function SearchBar({ city, setCity, handleSearch }) {
           endAdornment: (
             <InputAdornment position="end">
               <IconButton
-                onClick={handleSearch}
+                onClick={handleSearchClick}
                 size="small"
                 sx={{
                   color: "rgba(255,255,255,.65)",
