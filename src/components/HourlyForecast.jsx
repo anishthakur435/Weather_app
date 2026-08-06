@@ -1,8 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
 function HourlyForecast({ forecast }) {
-  console.log("forecast", forecast);
-
   const hourlyForecast = forecast?.list?.slice(0, 15) || [];
   const timezoneOffSet = forecast?.city?.timezone;
   return (

@@ -1,7 +1,11 @@
 import { useState, useCallback } from "react";
-import { getForecast, getWeatherData, getWeatherByCoords, getForecastByCoords } from "../services/weatherApi";
+import {
+  getForecast,
+  getWeatherData,
+  getWeatherByCoords,
+  getForecastByCoords,
+} from "../services/weatherApi";
 import { APP_CONFIG } from "../constants/config";
-
 
 export function useWeather() {
   const [weather, setWeather] = useState(null);
@@ -9,7 +13,6 @@ export function useWeather() {
   const [city, setCity] = useState(APP_CONFIG.DEFAULT_CITY);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
 
   const handleSearch = useCallback(async (cityName) => {
     if (!cityName || !cityName.trim()) return;
@@ -26,7 +29,6 @@ export function useWeather() {
       setWeather(weatherData);
       setForecast(forecastData);
       setCity(weatherData.name);
-
     } catch (err) {
       console.error(err);
       setError("Unable to fetch weather data. Please try again.");
@@ -64,13 +66,18 @@ export function useWeather() {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          handleSearchByCoords(position.coords.latitude, position.coords.longitude);
+          handleSearchByCoords(
+            position.coords.latitude,
+            position.coords.longitude,
+          );
         },
         () => {
-          console.warn("Geolocation denied or failed, falling back to default city.");
+          console.warn(
+            "Geolocation denied or failed,  location to default city.",
+          );
           handleSearch(APP_CONFIG.DEFAULT_CITY);
         },
-        { timeout: 5000 }
+        { timeout: 5000 },
       );
     } else {
       handleSearch(APP_CONFIG.DEFAULT_CITY);
