@@ -22,8 +22,9 @@ import {
 } from "@mui/material";
 
 import {  ViewSidebarOutlined } from "@mui/icons-material";
+import { APP_CONFIG } from "../constants/config";
 
-const drawerWidth = 300;
+const drawerWidth = APP_CONFIG.UI.DRAWER_WIDTH;
 
 const weatherVideos = {
   clear: clearSkySlow,
@@ -37,7 +38,7 @@ const weatherVideos = {
 function HomePage() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState(null);
-  const [city, setCity] = useState("Chandigarh");
+  const [city, setCity] = useState(APP_CONFIG.DEFAULT_CITY);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [openDrawer, setOpenDrawer] = useState(true);
