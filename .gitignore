@@ -15,6 +15,10 @@ dist-ssr
 #
 .env.local
 .env
+
+# 
+src/assets
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -123,3 +127,4 @@ Desktop.ini
 # ==============================
 *.sqlite
 *.sqlite3
+
