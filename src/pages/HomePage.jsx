@@ -4,8 +4,6 @@ import Sidebar from "../components/Sidebar";
 import CurrentWeather from "../components/CurrentWeather";
 import HourlyForecast from "../components/HourlyForecast";
 
-import { getForecast, getWeatherData } from "../api/weatherApi";
-
 import cloudySky from "../assets/background/cloudySky.mp4";
 import rain from "../assets/background/rain.mp4";
 import thunderStorm from "../assets/background/thunderStorms.mp4";
@@ -21,8 +19,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import {  ViewSidebarOutlined } from "@mui/icons-material";
+import { ViewSidebarOutlined } from "@mui/icons-material";
 import { APP_CONFIG } from "../constants/config";
+import { getForecast, getWeatherData } from "../services/weatherApi";
 
 const drawerWidth = APP_CONFIG.UI.DRAWER_WIDTH;
 
@@ -141,11 +140,7 @@ function HomePage() {
             },
           }}
         >
-          <Sidebar
-            city={city}
-            handleSearch={handleSearch}
-            weather={weather}
-          />
+          <Sidebar city={city} handleSearch={handleSearch} weather={weather} />
         </Drawer>
 
         <main
